@@ -83,7 +83,10 @@ int main(int argc, char** argv) {
             cap.open("resources/inception.mp4");
             break;
         case 6:
+            cap.open("resources/speed.mp4");
             break; 
+        default:
+            break;
         }
 
         move(0, 0);

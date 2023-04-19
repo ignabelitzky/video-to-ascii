@@ -20,6 +20,7 @@ void draw_menu(WINDOW *win, int item) {
         "Interstellar",
         "Pirates of the Caribbean",
         "Inception",
+        "Speed Racer",
     };
     wclear(win);
     init_pair(1, COLOR_BLACK, COLOR_BLUE);

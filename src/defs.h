@@ -1,3 +1,3 @@
 #pragma once
 
-#define MENUMAX 6
+#define MENUMAX 7
