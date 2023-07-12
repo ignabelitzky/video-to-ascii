@@ -17,6 +17,8 @@ int main(int argc, char** argv) {
 
     if(has_colors() != FALSE) {
         start_color();
+        init_pair(2, COLOR_BLACK, COLOR_BLUE);
+        attron(COLOR_PAIR(2) | A_BOLD);
     }
     refresh();
 
@@ -55,7 +57,7 @@ int main(int argc, char** argv) {
             draw_menu(menuWindow, menuItem);
         } while(key != '\n');
 
-        std::string density = "!@#$%^&*()_+ ";
+        std::string density = "@%#*+=-:. ";
 
         cv::VideoCapture cap;
         cv::Mat frame;
@@ -109,8 +111,10 @@ int main(int argc, char** argv) {
                     index = floor(avgColor / (255 / density.size()));
                     if(index >= density.size())
                         index = density.size() - 1;
+                    attron(COLOR_PAIR(2) | A_BOLD);
                     addch(density.at(index));
                     addch(density.at(index));
+                    attroff(COLOR_PAIR(2));
                     index = 0;
                 }
                 move(i+1, 0);
