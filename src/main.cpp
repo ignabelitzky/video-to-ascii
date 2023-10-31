@@ -57,7 +57,8 @@ int main(int argc, char** argv) {
             draw_menu(menuWindow, menuItem);
         } while(key != '\n');
 
-        std::string density = "@%#*+=-:. ";
+        // std::string density = " @%#*+=-:.";
+        std::string density = "@8#ohwZ0QJcnxrt|(1}[_~>i!l^ ";
 
         cv::VideoCapture cap;
         cv::Mat frame;
