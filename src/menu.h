@@ -6,4 +6,4 @@
 
 void print_centered(WINDOW *win, int startRow, std::string text);
 
-void draw_menu(WINDOW *win, int item);
+void draw_menu(WINDOW *win, size_t item);

@@ -8,7 +8,7 @@ void print_centered(WINDOW *win, int startRow, std::string text) {
     mvwprintw(win, startRow, adjustedCol, text.c_str());
 }
 
-void draw_menu(WINDOW *win, int item) {
+void draw_menu(WINDOW *win, size_t item) {
     std::string mainmenu = "Main menu";
     std::string stopMessage = "Press m or M to go back to the menu";
     std::string quitMessage = "Press q or Q to close the program";
@@ -27,7 +27,7 @@ void draw_menu(WINDOW *win, int item) {
     wbkgd(win, COLOR_PAIR(1));
     print_centered(win, 1, mainmenu);
     print_centered(win, 3, instructions);
-    for(int i = 0; i < menu.size(); ++i) {
+    for(size_t i = 0; i < menu.size(); ++i) {
         if(i == item)
             wattron(win, A_REVERSE);
         print_centered(win, 6 + (i * 2), menu.at(i));

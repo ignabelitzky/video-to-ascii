@@ -4,7 +4,7 @@
 #include "menu.h"
 #include "defs.h"
 
-int main(int argc, char** argv) {
+int main() {
     WINDOW *menuWindow = nullptr;
 
     int key = 0, menuItem = 0;
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     if(has_colors() != FALSE) {
         start_color();
         init_pair(2, COLOR_BLACK, COLOR_BLUE);
-        attron(COLOR_PAIR(2) | A_BOLD);
+        attron(A_BOLD);
     }
     refresh();
 
@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     
 
     if((menuWindow = newwin(height, width/4, 0, width - (width/4))) == nullptr) {
-        endwin();
+        endwin();   
         std::cerr << "Error creating the menu window." << std::endl;
         return 1;
     }
@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
         cv::Mat frame;
         int videoHeight = 0, videoWidth = 0;
         int colorBlue = 0, colorGreen = 0, colorRed = 0;
-        int index = 0, avgColor = 0;
+        size_t index = 0, avgColor = 0;
 
         switch(menuItem) {
         case 0:
@@ -112,10 +112,9 @@ int main(int argc, char** argv) {
                     index = floor(avgColor / (255 / density.size()));
                     if(index >= density.size())
                         index = density.size() - 1;
-                    attron(COLOR_PAIR(2) | A_BOLD);
+                    attron(A_BOLD);
                     addch(density.at(index));
                     addch(density.at(index));
-                    attroff(COLOR_PAIR(2));
                     index = 0;
                 }
                 move(i+1, 0);
