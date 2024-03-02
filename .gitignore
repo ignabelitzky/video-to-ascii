@@ -1,0 +1,18 @@
+# Compiled object files
+*.o
+
+# Executable files
+*.exe
+*.out
+converter
+
+# Dependency files
+*.d
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Compiled libraries
+*.so
+*.a
