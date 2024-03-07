@@ -6,11 +6,7 @@
 
 int main() {
     WINDOW *menuWindow = nullptr;
-
-    int key = 0, menuItem = 0;
-    int width = 0, height = 0;
-    bool quit = false;
-    char option = '\0';
+    WINDOW *playerWindow = nullptr;
 
     initscr();
     curs_set(0);    // This hides the cursor
@@ -22,6 +18,7 @@ int main() {
     }
     refresh();
 
+    int height, width;
     getmaxyx(stdscr, height, width);
     
 
@@ -30,7 +27,15 @@ int main() {
         std::cerr << "Error creating the menu window." << std::endl;
         return 1;
     }
+    if((playerWindow = newwin(height, width - (width/4), 0, 0)) == nullptr) {
+        endwin();
+        std::cerr << "Error creating the player window." << std::endl;
+        return 1;
+    }
 
+    int key = 0, menuItem = 0;
+    char option = '\0';
+    bool quit = false;
     while(!quit) {
         draw_menu(menuWindow, menuItem);
         keypad(menuWindow, TRUE);
@@ -57,8 +62,9 @@ int main() {
             draw_menu(menuWindow, menuItem);
         } while(key != '\n');
 
-        // std::string density = " @%#*+=-:.";
-        std::string density = "@8#ohwZ0QJcnxrt|(1}[_~>i!l^ ";
+        //std::string density = " :-=+*#%@";
+        std::string density = " ^l!i>~_[}1(|trxncJQ0Zwho#8@";
+        //std::string density = "@8#ohwZ0QJcnxrt|(1}[_~>i!l^ ";
 
         cv::VideoCapture cap;
         cv::Mat frame;
@@ -92,10 +98,13 @@ int main() {
             break;
         }
 
-        move(0, 0);
+        wmove(playerWindow, 0, 0);
         bool once = false;
+        int playerWindowHeight, playerWindowWidth;
+        getmaxyx(playerWindow, playerWindowHeight, playerWindowWidth);
         for(;;) {
             cap >> frame;
+            cv::resize(frame, frame, cv::Size(playerWindowWidth, playerWindowHeight-1));
             cv::Size sz = frame.size();
             videoWidth = sz.width;
             videoHeight = sz.height;
@@ -112,8 +121,6 @@ int main() {
                     index = floor(avgColor / (255 / density.size()));
                     if(index >= density.size())
                         index = density.size() - 1;
-                    attron(A_BOLD);
-                    addch(density.at(index));
                     addch(density.at(index));
                     index = 0;
                 }
@@ -125,7 +132,7 @@ int main() {
                 once = true;
             }
             refresh();
-            napms(42);
+            napms(33);
 
             nodelay(menuWindow, true);
             option = wgetch(menuWindow);
@@ -134,13 +141,14 @@ int main() {
             if(option == 'q' || option == 'Q') {
                 quit = true;
                 option = '\0';
+                cap.release();
                 break;
             } else if(option == 'm' || option == 'M') {
                 wclear(stdscr);
                 refresh();
-                //wclear(menuWindow);
                 draw_menu(menuWindow, menuItem);
                 option = '\0';
+                cap.release();
                 break;
             }
         }

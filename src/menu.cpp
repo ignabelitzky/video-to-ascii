@@ -10,8 +10,8 @@ void print_centered(WINDOW *win, int startRow, std::string text) {
 
 void draw_menu(WINDOW *win, size_t item) {
     std::string mainmenu = "Main menu";
-    std::string stopMessage = "Press m or M to go back to the menu";
-    std::string quitMessage = "Press q or Q to close the program";
+    std::string stopMessage = "Press M to activate the menu during playback";
+    std::string quitMessage = "Press Q to exit the program";
     std::string instructions = "Use arrow keys (up and down) for selection";
     std::vector<std::string> menu {
         "Encanto",
