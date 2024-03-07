@@ -4,6 +4,13 @@
 #include "menu.h"
 #include "defs.h"
 
+static void clear_window(WINDOW *playerWindow) {
+    wclear(playerWindow);
+    waddstr(playerWindow, "End of the video\n");
+    waddstr(playerWindow, "Please exit or select another video.\n");
+    wrefresh(playerWindow);
+}
+
 int main() {
     WINDOW *menuWindow = nullptr;
     WINDOW *playerWindow = nullptr;
@@ -106,10 +113,7 @@ int main() {
         for(;;) {
             cap >> frame;
             if(frame.empty()) {
-                wclear(playerWindow);
-                waddstr(playerWindow, "End of the video\n");
-                waddstr(playerWindow, "Please exit or select another video.\n");
-                wrefresh(playerWindow);
+                clear_window(playerWindow);
                 break;
             }
             cv::resize(frame, frame, cv::Size(playerWindowWidth, playerWindowHeight-1));
@@ -148,8 +152,7 @@ int main() {
                 cap.release();
                 break;
             } else if(option == 'm' || option == 'M') {
-                wclear(stdscr);
-                refresh();
+                clear_window(playerWindow);
                 draw_menu(menuWindow, menuItem);
                 option = '\0';
                 cap.release();
