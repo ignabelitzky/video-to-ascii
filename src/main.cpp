@@ -28,6 +28,7 @@ int main() {
         return 1;
     }
     if((playerWindow = newwin(height, width - (width/4), 0, 0)) == nullptr) {
+        delwin(menuWindow);
         endwin();
         std::cerr << "Error creating the player window." << std::endl;
         return 1;
@@ -104,14 +105,17 @@ int main() {
         getmaxyx(playerWindow, playerWindowHeight, playerWindowWidth);
         for(;;) {
             cap >> frame;
+            if(frame.empty()) {
+                wclear(playerWindow);
+                waddstr(playerWindow, "End of the video\n");
+                waddstr(playerWindow, "Please exit or select another video.\n");
+                wrefresh(playerWindow);
+                break;
+            }
             cv::resize(frame, frame, cv::Size(playerWindowWidth, playerWindowHeight-1));
             cv::Size sz = frame.size();
             videoWidth = sz.width;
             videoHeight = sz.height;
-            if(frame.empty()) {
-                std::cout << "Enf of the video" << std::endl;
-                break;
-            }
             for(int i = 0; i < videoHeight; ++i) {
                 for(int j = 0; j < videoWidth; ++j) {
                     colorBlue = frame.at<cv::Vec3b>(i, j)[0];
@@ -154,6 +158,8 @@ int main() {
         }
         echo();
     }
+    delwin(menuWindow);
+    delwin(playerWindow);
     endwin();
 
     return 0;
