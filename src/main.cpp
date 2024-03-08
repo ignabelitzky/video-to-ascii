@@ -1,8 +1,12 @@
 #include <iostream>
+#include <chrono>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include "menu.h"
-#include "defs.h"
+#include "../include/menu.hpp"
+#include "../include/defs.hpp"
+#include "../include/audio.hpp"
+#define MINIAUDIO_IMPLEMENTATION
+#include "../include/miniaudio.hpp"
 
 static void clear_window(WINDOW *playerWindow) {
     wclear(playerWindow);
@@ -62,6 +66,8 @@ int main() {
                     menuItem = MENUMAX-1;
                 break;
             case 'q':
+                delwin(menuWindow);
+                delwin(playerWindow);
                 endwin();
                 return 0;
             default:
@@ -79,38 +85,51 @@ int main() {
         int videoHeight = 0, videoWidth = 0;
         int colorBlue = 0, colorGreen = 0, colorRed = 0;
         size_t index = 0, avgColor = 0;
+        std::string mp3Filepath = "";
 
         switch(menuItem) {
         case 0:
-            cap.open("resources/encanto.mp4");    
+            cap.open("resources/encanto.mp4");
+            mp3Filepath = "resources/encanto.mp3";
             break;
         case 1:
             cap.open("resources/matrix.mp4");
+            mp3Filepath = "resources/matrix.mp3";
             break;
         case 2:
             cap.open("resources/quantum.mp4");
+            mp3Filepath = "resources/quantum.mp3";
             break;
         case 3:
             cap.open("resources/interstellar.mp4");
+            mp3Filepath = "resources/interstellar.mp3";
             break;
         case 4:
             cap.open("resources/pirates.mp4");
+            mp3Filepath = "resources/pirates.mp3";
             break;
         case 5:
             cap.open("resources/inception.mp4");
+            mp3Filepath = "resources/inception.mp3";
             break;
         case 6:
             cap.open("resources/speed.mp4");
+            mp3Filepath = "resources/speed.mp3";
             break; 
         default:
             break;
         }
-
+        wclear(playerWindow);
+        wrefresh(playerWindow);
+        double fps = cap.get(cv::CAP_PROP_FPS);
         wmove(playerWindow, 0, 0);
         bool once = false;
         int playerWindowHeight, playerWindowWidth;
         getmaxyx(playerWindow, playerWindowHeight, playerWindowWidth);
+        Audio audio(mp3Filepath);
+        audio.play();
         for(;;) {
+            auto start = std::chrono::high_resolution_clock::now();
             cap >> frame;
             if(frame.empty()) {
                 clear_window(playerWindow);
@@ -140,7 +159,9 @@ int main() {
                 once = true;
             }
             refresh();
-            napms(33);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time_span = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            napms(1000 / fps - time_span.count());
 
             nodelay(menuWindow, true);
             option = wgetch(menuWindow);

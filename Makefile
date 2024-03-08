@@ -1,12 +1,12 @@
 CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Werror -pedantic -march=native -O3 -ffast-math
-LIBS := -lncurses `pkg-config --cflags --libs opencv`
+CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -pedantic -march=native -O3 -ffast-math -Wno-stringop-overflow
+LIBS := -lncurses `pkg-config --cflags --libs opencv` -lpthread -lm -ldl
 
 .PHONY: all clean
 
 TARGET := converter
 
-SRC := src/main.cpp src/menu.cpp
+SRC := src/main.cpp src/menu.cpp src/audio.cpp src/helper.cpp
 OBJ := $(SRC:.cpp=.o)
 
 all: $(TARGET)

@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "../include/menu.hpp"
 
 void print_centered(WINDOW *win, int startRow, std::string text) {
     int centerCol = win->_maxx / 2;
