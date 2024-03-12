@@ -83,8 +83,6 @@ int main() {
         cv::VideoCapture cap;
         cv::Mat frame;
         int videoHeight = 0, videoWidth = 0;
-        int colorBlue = 0, colorGreen = 0, colorRed = 0;
-        size_t index = 0, avgColor = 0;
         std::string mp3Filepath = "";
 
         switch(menuItem) {
@@ -135,23 +133,17 @@ int main() {
                 clear_window(playerWindow);
                 break;
             }
-            cv::resize(frame, frame, cv::Size(playerWindowWidth, playerWindowHeight-1));
+            cv::resize(frame, frame, cv::Size(playerWindowWidth, playerWindowHeight));
+            cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
             cv::Size sz = frame.size();
             videoWidth = sz.width;
             videoHeight = sz.height;
             for(int i = 0; i < videoHeight; ++i) {
                 for(int j = 0; j < videoWidth; ++j) {
-                    colorBlue = frame.at<cv::Vec3b>(i, j)[0];
-                    colorGreen = frame.at<cv::Vec3b>(i, j)[1];
-                    colorRed = frame.at<cv::Vec3b>(i, j)[2];
-                    avgColor = (colorBlue + colorGreen + colorRed) / 3;
-                    index = floor(avgColor / (255 / density.size()));
-                    if(index >= density.size())
-                        index = density.size() - 1;
-                    addch(density.at(index));
-                    index = 0;
+                    uchar intensity = frame.at<uchar>(i, j);
+                    char asciiPixel = pixelToASCII(intensity);
+                    mvaddch(i, j, asciiPixel);
                 }
-                move(i+1, 0);
             }
             if(!once) {
                 wclear(menuWindow);
