@@ -1,6 +1,6 @@
 #include <iostream>
 #include <chrono>
-#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/highgui.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
 #include "../include/menu.hpp"
 #include "../include/defs.hpp"

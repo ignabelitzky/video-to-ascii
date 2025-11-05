@@ -1,6 +1,6 @@
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -pedantic -march=native -O3 -ffast-math -Wno-stringop-overflow
-LIBS := -lncurses `pkg-config --cflags --libs opencv` -lpthread -lm -ldl
+LIBS := -lncurses `pkg-config --cflags --libs opencv4` -lpthread -lm -ldl
 
 .PHONY: all clean
 

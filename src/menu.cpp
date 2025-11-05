@@ -1,11 +1,14 @@
 #include "../include/menu.hpp"
 
 void print_centered(WINDOW *win, int startRow, std::string text) {
-    int centerCol = win->_maxx / 2;
+    int maxy, maxx;
+    getmaxyx(win, maxy, maxx);
+    (void)maxy;
+    int centerCol = maxx / 2;
     int halfLength = text.length() / 2;
     int adjustedCol = centerCol - halfLength;
 
-    mvwprintw(win, startRow, adjustedCol, text.c_str());
+    mvwprintw(win, startRow, adjustedCol, "%s", text.c_str());
 }
 
 void draw_menu(WINDOW *win, size_t item) {
@@ -33,8 +36,12 @@ void draw_menu(WINDOW *win, size_t item) {
         print_centered(win, 6 + (i * 2), menu.at(i));
         wattroff(win, A_REVERSE);
     }
-    print_centered(win, win->_maxy - 3, stopMessage);
-    print_centered(win, win->_maxy - 1, quitMessage);
+
+    int maxy, maxx;
+    getmaxyx(win, maxy, maxx);
+    print_centered(win, maxy - 3, stopMessage);
+    print_centered(win, maxy - 1, quitMessage);
+
     wmove(win, 0, 0);
     wrefresh(win);
 }
